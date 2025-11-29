@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Beneficios - SaberPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #e8f5e9 0%, #f1f8f4 50%, #ffffff 100%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #1a3d2e;
+            min-height: 100vh;
+        }
+
+        /* Navbar - Diseño Split con Línea Vertical */
+		.navbar {
+		            background: #ffffff;
+		            box-shadow: 0 3px 25px rgba(40, 167, 69, 0.15);
+		            padding: 0;
+		            border-bottom: 4px solid #28a745;
+		            position: sticky;
+		            top: 0;
+		            z-index: 1000;
+		        }
+
+		        .navbar-brand {
+		            font-weight: 800;
+		            color: #28a745 !important;
+		            font-size: 1.7rem;
+		            padding: 1.3rem 2rem;
+		            background: linear-gradient(135deg, #f1f8f1 0%, #e8f5e9 100%);
+		            border-right: 4px solid #28a745;
+		            display: flex;
+		            align-items: center;
+		            gap: 0.6rem;
+		        }
+
+		        .navbar-brand i {
+		            font-size: 2rem;
+		            animation: pulse 2s infinite;
+		        }
+
+		        @keyframes pulse {
+		            0%, 100% { transform: scale(1); }
+		            50% { transform: scale(1.05); }
+		        }
+
+		        .navbar-nav {
+		            flex-direction: row;
+		            align-items: center;
+		            gap: 0.3rem;
+		            padding: 0.5rem 1rem;
+		        }
+
+		        .navbar-nav .nav-link {
+		            color: #2d4a2b !important;
+		            padding: 0.85rem 1.3rem;
+		            font-weight: 700;
+		            border-radius: 14px;
+		            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		            display: flex;
+		            align-items: center;
+		            gap: 0.5rem;
+		            font-size: 0.95rem;
+		        }
+
+		        .navbar-nav .nav-link:hover,
+		        .navbar-nav .nav-link.active {
+		            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+		            color: #ffffff !important;
+		            transform: translateY(-3px) scale(1.05);
+		            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+		        }
+
+
+        /* Page Title - Diseño con Barra Diagonal */
+        h2 {
+            color: #1a3d2e;
+            font-weight: 900;
+            font-size: 2.8rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) skewX(-20deg);
+            width: 150px;
+            height: 5px;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            border-radius: 10px;
+        }
+
+        h2 i {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 5px rgba(40, 167, 69, 0.3));
+        }
+
+        /* Cards - Diseño con Borde Superior Grueso */
+        .card {
+            border: none;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.18);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8fdf9 0%, #e8f5e9 100%);
+            color: #1a3d2e;
+            padding: 1.8rem 2rem;
+            font-weight: 700;
+            border-bottom: 2px solid #d4edda;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-header i {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .card-body {
+            padding: 2rem 2.5rem;
+        }
+
+        /* Info Boxes en Grid */
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            background: linear-gradient(135deg, #f8fdf9 0%, #ffffff 100%);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 2px solid #e8f5e9;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, #28a745 0%, #20c997 100%);
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+            border-color: #28a745;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.15);
+        }
+
+        .info-item p:first-child {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: #28a745;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-item p:first-child i {
+            font-size: 1rem;
+        }
+
+        .info-item p:last-child {
+            color: #2d5f45;
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        /* Graduation Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-badge i {
+            font-size: 1.4rem;
+        }
+
+        /* Score Display */
+        .score-display {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: 900;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Current Benefit Alert */
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border: none;
+            border-left: 5px solid #17a2b8;
+            border-radius: 14px;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.15);
+        }
+
+        .alert-info h5 {
+            color: #0c5460;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .alert-info h5::before {
+            content: '★';
+            font-size: 1.8rem;
+            color: #17a2b8;
+        }
+
+        /* Benefit Cards - Diseño de Tarjetas Premium */
+        .benefit-card {
+            background: #ffffff;
+            padding: 2rem 1.5rem;
+            border-radius: 18px;
+            border: 3px solid #e8f5e9;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(40, 167, 69, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.25);
+        }
+
+        .benefit-bronze {
+            border-color: #cd7f32;
+            background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);
+        }
+
+        .benefit-bronze:hover {
+            border-color: #cd7f32;
+            box-shadow: 0 15px 40px rgba(205, 127, 50, 0.3);
+        }
+
+        .benefit-silver {
+            border-color: #c0c0c0;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+        }
+
+        .benefit-silver:hover {
+            border-color: #17a2b8;
+            box-shadow: 0 15px 40px rgba(23, 162, 184, 0.3);
+        }
+
+        .benefit-gold {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #fffef0 0%, #ffffff 100%);
+        }
+
+        .benefit-gold:hover {
+            border-color: #ffc107;
+            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.4);
+        }
+
+        .benefit-card h5 {
+            font-weight: 900;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .benefit-card h5 i {
+            font-size: 1.5rem;
+        }
+
+        .benefit-card p {
+            font-weight: 700;
+            color: #2d5f45;
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .benefit-card ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .benefit-card ul li {
+            padding: 0.7rem 0;
+            font-weight: 600;
+            color: #2d5f45;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 1px solid #f0f9f4;
+        }
+
+        .benefit-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .benefit-card ul li i {
+            font-size: 1.1rem;
+        }
+
+        /* Info Box - General Information */
+        .info-box {
+            background: linear-gradient(135deg, #f8fdf9 0%, #ffffff 100%);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 2px solid #e8f5e9;
+            border-left: 5px solid #28a745;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .info-box:hover {
+            border-color: #28a745;
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .info-box h6 {
+            color: #28a745;
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .info-box h6 i {
+            font-size: 1.2rem;
+        }
+
+        .info-box p {
+            color: #2d5f45;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: #28a745;
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 1rem;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #ffffff;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(40, 167, 69, 0.08);
+            border-top: 3px solid #28a745;
+            margin-top: 4rem;
+        }
+
+        .footer small {
+            color: #5a7d6f;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .info-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.3rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .score-display {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card {
+            animation: slideUp 0.6s ease forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        .benefit-card {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .benefit-card:nth-child(1) { animation-delay: 0.2s; }
+        .benefit-card:nth-child(2) { animation-delay: 0.4s; }
+        .benefit-card:nth-child(3) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container" style="max-width: 1200px;">
+            <a class="navbar-brand" th:href="@{/estudiante/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/identificacion}">
+                            <i class="fas fa-id-card"></i> Identificación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mi-resultado}">
+                            <i class="fas fa-chart-bar"></i> Mi Resultado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/resultados-totales}">
+                            <i class="fas fa-users"></i> Resultados del Grupo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/estudiante/mis-beneficios}">
+                            <i class="fas fa-gift"></i> Mis Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5" style="max-width: 1200px;">
+        <h2>
+            <i class="fas fa-gift"></i> Mis Beneficios Académicos
+        </h2>
+
+        <!-- Información del Estudiante -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-user"></i> Información del Estudiante</h5>
+            </div>
+            <div class="card-body">
+                <div class="info-section">
+                    <div class="info-item">
+                        <p><i class="fas fa-user-circle"></i> Nombre</p>
+                        <p th:text="${nombreCompleto}">Nombre del Estudiante</p>
+                    </div>
+                    <div class="info-item">
+                        <p><i class="fas fa-id-card"></i> Documento</p>
+                        <p>
+                            <span th:text="${tipoDocumento}">CC</span> - 
+                            <span th:text="${numeroDocumento}">1234567890</span>
+                        </p>
+                    </div>
+                    <div class="info-item">
+                        <p><i class="fas fa-trophy"></i> Puntaje</p>
+                        <p>
+                            <span class="score-display">
+                                <span th:text="${puntaje}">0</span> / 300
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="mt-4">
+                    <p><strong><i class="fas fa-graduation-cap"></i> Estado de Graduación:</strong></p>
+                    <span th:if="${puedeGraduarse}" class="badge bg-success status-badge">
+                        <i class="fas fa-check-circle"></i> Puede Graduarse
+                    </span>
+                    <span th:unless="${puedeGraduarse}" class="badge bg-danger status-badge">
+                        <i class="fas fa-times-circle"></i> No Cumple Requisitos
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tu Beneficio Actual -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-award"></i> Tu Beneficio Académico</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5 th:text="${beneficio}">Descripción del beneficio</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Niveles de Beneficio -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-star"></i> Niveles de Beneficio Disponibles</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Beneficio 4.5 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="benefit-card benefit-bronze">
+                            <h5 class="text-warning">
+                                <i class="fas fa-medal"></i> Beneficio 4.5
+                            </h5>
+                            <p><strong>Puntaje: 180-210</strong></p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Exoneración informe final TG</li>
+                                <li><i class="fas fa-check text-success"></i> Nota definitiva 4.5 en TG</li>
+                                <li><i class="fas fa-check text-success"></i> Reconocimiento académico</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Beneficio 4.7 + Beca 50% -->
+                    <div class="col-md-4 mb-4">
+                        <div class="benefit-card benefit-silver">
+                            <h5 class="text-info">
+                                <i class="fas fa-medal"></i> Beneficio 4.7 + Beca 50%
+                            </h5>
+                            <p><strong>Puntaje: 211-240</strong></p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Exoneración informe final TG</li>
+                                <li><i class="fas fa-check text-success"></i> Nota definitiva 4.7 en TG</li>
+                                <li><i class="fas fa-check text-success"></i> Beca 50% derechos de grado</li>
+                                <li><i class="fas fa-check text-success"></i> Reconocimiento académico</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Beneficio 5.0 + Beca 100% -->
+                    <div class="col-md-4 mb-4">
+                        <div class="benefit-card benefit-gold">
+                            <h5 class="text-warning">
+                                <i class="fas fa-trophy"></i> Beneficio 5.0 + Beca 100%
+                            </h5>
+                            <p><strong>Puntaje: 241+</strong></p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Exoneración informe final TG</li>
+                                <li><i class="fas fa-check text-success"></i> Nota definitiva 5.0 en TG</li>
+                                <li><i class="fas fa-check text-success"></i> Beca 100% derechos de grado</li>
+                                <li><i class="fas fa-check text-success"></i> Reconocimiento académico</li>
+                                <li><i class="fas fa-check text-success"></i> Oportunidades de postgrado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información General -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Información General</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-exclamation-circle"></i> Requisito Mínimo</h6>
+                            <p>Puntaje mínimo de <strong>80 puntos</strong> para graduarse.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-file-alt"></i> Documentación</h6>
+                            <p>Completar trámites según plazos establecidos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-clipboard-check"></i> Requisitos</h6>
+                            <p>Cumplir todos los requisitos académicos y administrativos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-envelope"></i> Notificación</h6>
+                            <p>Recibirás notificación oficial por correo electrónico.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-calendar-check"></i> Vigencia</h6>
+                            <p>Válido durante toda la carrera académica.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-phone-alt"></i> Contacto</h6>
+                            <p>coordinacion@uts.edu.co</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <small><i class="fas fa-copyright"></i> 2024 Sistema SaberPro. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

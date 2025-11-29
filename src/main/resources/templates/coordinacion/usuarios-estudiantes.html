@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Usuarios Estudiantes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #1a3a52 0%, #2c5aa0 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #ffffff !important;
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .navbar-brand i {
+            color: #ffffff !important;
+        }
+        .nav-link {
+            color: #ffffff !important;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+            opacity: 0.9;
+        }
+        .nav-link:hover {
+            color: #ffffff !important;
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        .nav-link i {
+            color: #ffffff !important;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+        }
+        .card-header {
+            background: #f5f7fa;
+            color: white;
+            border: none;
+            border-radius: 15px 15px 0 0;
+            padding: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h3,
+        .card-header h5 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.05) 0%, rgba(56, 239, 125, 0.05) 100%);
+            border-left: 4px solid #1a3a52;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-left-color: #2c5aa0;
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        }
+        .stat-card h5 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            color: #1a3a52;
+        }
+        .stat-card .stat-subtitle {
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .table {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+        .table thead {
+            background: #f5f7fa;
+        }
+        .table thead th {
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem 0.75rem;
+        }
+        .table tbody tr {
+            border-bottom: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(17, 153, 142, 0.08);
+            box-shadow: inset 0 1px 0 rgba(17, 153, 142, 0.2);
+        }
+        .table tbody td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+        }
+        .badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .badge.bg-success {
+            background: linear-gradient(90deg, #1a3a52 0%, #2c5aa0 100%) !important;
+            color: white;
+        }
+        .badge.bg-warning {
+            background: #ffc107 !important;
+            color: #000;
+        }
+        .badge.bg-danger {
+            background: #dc3545 !important;
+            color: white;
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #f5f7fa;
+            border: none;
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+            color: white;
+        }
+        .btn-sm {
+            padding: 0.35rem 0.65rem;
+            font-size: 0.8rem;
+        }
+        .alert {
+            border: none;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+        .alert-info {
+            background: rgba(13, 202, 240, 0.1);
+            border-left-color: #0dcaf0;
+            color: #084298;
+        }
+        .container-main {
+            padding: 2rem 0;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #1a3a52;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        footer {
+            background: linear-gradient(90deg, #1a3a52 0%, #2c5aa0 100%);
+            color: #aaa;
+            border-top: 3px solid transparent;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+        footer small {
+            color: #888;
+        }
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container" style="max-width: 1200px;">
+            <a class="navbar-brand" th:href="@{/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/estudiantes}">
+                            <i class="fas fa-users"></i> Estudiantes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/estudiantes/nuevo}">
+                            <i class="fas fa-user-plus"></i> Nuevo Estudiante
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/beneficios}">
+                            <i class="fas fa-gift"></i> Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/informes}">
+                            <i class="fas fa-chart-bar"></i> Informes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container mt-5">
+            <!-- Header Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3><i class="fas fa-users"></i> <span th:text="${pageTitle}">Usuarios Estudiantes</span></h3>
+                    <a th:href="@{/coordinacion/estudiantes}" class="btn btn-sm btn-light">
+                        <i class="fas fa-arrow-left"></i> Volver a Estudiantes
+                    </a>
+                </div>
+                <div class="card-body">
+                    <!-- Información -->
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Información:</strong> Esta sección muestra todos los usuarios con rol ESTUDIANTE. 
+                        Los estudiantes pueden tener o no datos académicos (puntaje Saber Pro) asociados.
+                    </div>
+
+                    <!-- Estadísticas Rápidas -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="stat-card">
+                                <h5><i class="fas fa-users"></i> Total Usuarios</h5>
+                                <div class="stat-number" th:text="${usuarios.size()}">0</div>
+                                <div class="stat-subtitle">Estudiantes registrados</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="stat-card">
+                                <h5><i class="fas fa-check-circle"></i> Con Datos</h5>
+                                <div class="stat-number" id="conDatos">0</div>
+                                <div class="stat-subtitle">Con información académica</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="stat-card">
+                                <h5><i class="fas fa-exclamation-circle"></i> Sin Datos</h5>
+                                <div class="stat-number" id="sinDatos">0</div>
+                                <div class="stat-subtitle">Pendientes por completar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Usuarios -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-table"></i> Listado de Usuarios Estudiantes</h5>
+                </div>
+                <div class="card-body">
+                    <div th:if="${not #lists.isEmpty(usuarios)}" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Email</th>
+                                    <th>Estado</th>
+                                    <th>Datos Académicos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${usuarios}">
+                                    <td th:text="${usuario.id}"></td>
+                                    <td th:text="${usuario.nombreCompleto}"></td>
+                                    <td th:text="${usuario.email}"></td>
+                                    <td>
+                                        <span class="badge"
+                                              th:classappend="${usuario.activo ? 'bg-success' : 'bg-danger'}"
+                                              th:text="${usuario.activo ? 'Activo' : 'Inactivo'}">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${usuario.estudiante != null}" class="badge bg-success">
+                                            <i class="fas fa-check"></i> Con datos
+                                        </span>
+                                        <span th:if="${usuario.estudiante == null}" class="badge bg-warning">
+                                            <i class="fas fa-exclamation"></i> Sin datos
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a th:if="${usuario.estudiante == null}" 
+                                               th:href="@{/coordinacion/estudiantes/nuevo}" 
+                                               class="btn btn-primary" title="Agregar datos académicos">
+                                                <i class="fas fa-plus"></i> Datos
+                                            </a>
+                                            <a th:if="${usuario.estudiante != null}" 
+                                               th:href="@{/saberpro/coordinacion/estudiantes/editar/{id}(id=${usuario.estudiante.id})}" 
+                                               class="btn btn-primary" title="Editar datos académicos">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </a>
+                                            <a th:href="@{/saberpro/admin/usuarios/editar/{id}(id=${usuario.id})}" 
+                                               class="btn btn-info" title="Editar datos del usuario">
+                                                <i class="fas fa-user-edit"></i> Usuario
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${#lists.isEmpty(usuarios)}" class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No hay usuarios estudiantes registrados en el sistema</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <small>
+                        &copy; 2024 Universidad Tecnológica de Santander - Sistema Saber Pro v1.0.0
+                    </small>
+                </div>
+                <div class="col-md-4 text-end">
+                    <small>
+                        <i class="fas fa-lock"></i> Acceso seguro autenticado
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Calcular estadísticas
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('.table tbody tr');
+            let conDatos = 0;
+            let sinDatos = 0;
+
+            rows.forEach(row => {
+                const badgeCell = row.querySelector('td:nth-child(5)');
+                if (badgeCell) {
+                    if (badgeCell.textContent.includes('Con datos')) {
+                        conDatos++;
+                    } else {
+                        sinDatos++;
+                    }
+                }
+            });
+
+            document.getElementById('conDatos').textContent = conDatos;
+            document.getElementById('sinDatos').textContent = sinDatos;
+        });
+    </script>
+</body>
+</html>
+
+
