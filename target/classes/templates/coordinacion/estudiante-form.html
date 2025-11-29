@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Formulario Estudiante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5faf5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #1a3d1a;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, transparent 48%, rgba(40, 167, 69, 0.015) 50%, transparent 52%),
+                linear-gradient(45deg, transparent 48%, rgba(40, 167, 69, 0.015) 50%, transparent 52%);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navbar Verde Mejorado */
+		.navbar {
+		            background: #ffffff;
+		            box-shadow: 0 3px 25px rgba(40, 167, 69, 0.15);
+		            padding: 0;
+		            border-bottom: 4px solid #28a745;
+		            position: sticky;
+		            top: 0;
+		            z-index: 1000;
+		        }
+
+		        .navbar-brand {
+		            font-weight: 800;
+		            color: #28a745 !important;
+		            font-size: 1.7rem;
+		            padding: 1.3rem 2rem;
+		            background: linear-gradient(135deg, #f1f8f1 0%, #e8f5e9 100%);
+		            border-right: 4px solid #28a745;
+		            display: flex;
+		            align-items: center;
+		            gap: 0.6rem;
+		        }
+
+		        .navbar-brand i {
+		            font-size: 2rem;
+		            animation: pulse 2s infinite;
+		        }
+
+		        @keyframes pulse {
+		            0%, 100% { transform: scale(1); }
+		            50% { transform: scale(1.05); }
+		        }
+
+		        .navbar-nav {
+		            flex-direction: row;
+		            align-items: center;
+		            gap: 0.3rem;
+		            padding: 0.5rem 1rem;
+		        }
+
+		        .navbar-nav .nav-link {
+		            color: #2d4a2b !important;
+		            padding: 0.85rem 1.3rem;
+		            font-weight: 700;
+		            border-radius: 14px;
+		            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		            display: flex;
+		            align-items: center;
+		            gap: 0.5rem;
+		            font-size: 0.95rem;
+		        }
+
+		        .navbar-nav .nav-link:hover {
+		            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+		            color: #ffffff !important;
+		            transform: translateY(-3px) scale(1.05);
+		            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+		        }
+        /* Alerts Mejorados */
+        .alert {
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 1rem 1.4rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            animation: fadeIn 0.4s ease;
+            font-size: 0.92rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-info {
+            background: #e7f5ff;
+            border-color: #339af0;
+            color: #1864ab;
+        }
+
+        .alert-success {
+            background: #e8f9ed;
+            border-color: #28a745;
+            color: #1a5928;
+        }
+
+        .alert-danger {
+            background: #fdedef;
+            border-color: #dc3545;
+            color: #7a1f29;
+        }
+
+        .alert-warning {
+            background: #fff8e1;
+            border-color: #ffc107;
+            color: #7d6608;
+        }
+
+        .alert strong {
+            font-weight: 700;
+        }
+
+        /* Cards Mejorados */
+        .card {
+            border: 2px solid #e3f2e3;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.12);
+            border-color: #28a745;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1.8rem 2rem;
+            font-weight: 700;
+            border-bottom: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 1.7rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            letter-spacing: -0.4px;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 3px solid #e8f5e9;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .section-description {
+            background: #f8fff8;
+            border-left: 4px solid #28a745;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #2d5a2d;
+        }
+
+        .form-section {
+            background: #fafffe;
+            border: 1px solid #e8f5e9;
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d5a2d;
+            margin-bottom: 0.5rem;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-label i {
+            color: #28a745;
+            font-size: 1rem;
+        }
+
+        .badge-required {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            margin-left: 0.3rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e3f2e3;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.92rem;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+            outline: none;
+        }
+
+        .field-help {
+            display: block;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.4rem;
+            line-height: 1.4;
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge.bg-success {
+            background: #d4f4dd !important;
+            color: #1a5928 !important;
+            border: 2px solid #28a745;
+        }
+
+        .badge.bg-danger {
+            background: #ffe0e3 !important;
+            color: #7a1f29 !important;
+            border: 2px solid #dc3545;
+        }
+
+        .badge.bg-warning {
+            background: #fff3cd !important;
+            color: #856404 !important;
+            border: 2px solid #ffc107;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-light {
+            background: #ffffff;
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-light:hover {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-sm {
+            padding: 0.55rem 1.2rem;
+            font-size: 0.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #ffffff;
+            padding: 1.8rem 0;
+            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08);
+            border-top: 3px solid #28a745;
+            margin-top: 3.5rem;
+        }
+
+        footer small {
+            color: #2d5a2d;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .card-header h3 {
+                font-size: 1.4rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .form-section {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container" style="max-width: 1200px;">
+            <a class="navbar-brand" th:href="@{/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/estudiantes}">
+                            <i class="fas fa-users"></i> Estudiantes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/estudiantes/nuevo}">
+                            <i class="fas fa-user-plus"></i> Nuevo Estudiante
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/beneficios}">
+                            <i class="fas fa-gift"></i> Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/coordinacion/informes}">
+                            <i class="fas fa-chart-bar"></i> Informes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-user-graduate"></i> <span th:text="${pageTitle}">Formulario Estudiante</span></h3>
+                            <a th:href="@{/coordinacion/estudiantes}" class="btn btn-light btn-sm">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> <strong>Instrucciones:</strong> Completa todos los campos marcados con <span class="badge-required">REQUERIDO</span> 
+                                para registrar correctamente el estudiante en el sistema.
+                            </div>
+
+                            <form th:action="@{/coordinacion/estudiantes/guardar}" method="post" th:object="${estudiante}">
+                                <input type="hidden" th:field="*{id}" />
+                                
+                                <!-- Sección: Asociación de Usuario -->
+                                <h4 class="section-title">
+                                    <i class="fas fa-link"></i> Asociación de Usuario del Sistema
+                                </h4>
+                                <div class="section-description">
+                                    <i class="fas fa-lightbulb"></i> <strong>¿Qué es esto?</strong> 
+                                    Si el estudiante ya tiene una cuenta de usuario en el sistema, puedes asociarla aquí. Esto permite que el estudiante acceda a su perfil académico.
+                                </div>
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-user-circle"></i> Usuario del Sistema (Opcional)
+                                        </label>
+                                        <select name="usuarioId" class="form-select">
+                                            <option value="" th:selected="${usuarioIdActual == null}">-- No asociar usuario --</option>
+                                            <option th:each="usuario : ${usuarios}" 
+                                                    th:value="${usuario.id}"
+                                                    th:text="${usuario.nombreCompleto + ' (' + usuario.email + ')'}"
+                                                    th:selected="${usuarioIdActual != null and usuarioIdActual == usuario.id}">
+                                            </option>
+                                        </select>
+                                        <div th:if="${usuarioIdActual != null}" class="alert alert-success mt-2">
+                                            <i class="fas fa-check-circle"></i> 
+                                            <strong>Usuario actualmente asociado:</strong> [[${usuarioNombreActual}]] ([[${usuarioEmailActual}]])
+                                        </div>
+                                        <span class="field-help">
+                                            Selecciona un usuario existente para vincularlo con este estudiante. Si ya tiene usuario asignado, aparecerá seleccionado.
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Sección: Datos Personales -->
+                                <h4 class="section-title">
+                                    <i class="fas fa-id-card"></i> Información Personal
+                                </h4>
+                                <div class="section-description">
+                                    <i class="fas fa-lightbulb"></i> <strong>¿Qué es esto?</strong> 
+                                    Información de identificación del estudiante. Estos datos son esenciales para la identificación y comunicación.
+                                </div>
+                                <div class="form-section">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-file-signature"></i> Tipo de Documento <span class="badge-required">REQUERIDO</span>
+                                                </label>
+                                                <select class="form-select" th:field="*{tipoDocumento}" required>
+                                                    <option value="">-- Seleccionar --</option>
+                                                    <option value="CC">Cédula de Ciudadanía (CC)</option>
+                                                    <option value="CE">Cédula de Extranjería (CE)</option>
+                                                    <option value="PA">Pasaporte (PA)</option>
+                                                    <option value="PEP">Permiso Especial de Permanencia</option>
+                                                </select>
+                                                <span class="field-help">Ej: Si es colombiano, selecciona "Cédula de Ciudadanía"</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-barcode"></i> Número de Documento <span class="badge-required">REQUERIDO</span>
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{numeroDocumento}" required placeholder="Ej: 1024563897">
+                                                <span class="field-help">Sin puntos ni espacios (ej: 1024563897)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-user"></i> Primer Nombre <span class="badge-required">REQUERIDO</span>
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{primerNombre}" required placeholder="Ej: Juan">
+                                                <span class="field-help">Primer nombre del estudiante</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-user"></i> Segundo Nombre
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{segundoNombre}" placeholder="Ej: Esteban">
+                                                <span class="field-help">Segundo nombre del estudiante (opcional)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-user"></i> Primer Apellido <span class="badge-required">REQUERIDO</span>
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{primerApellido}" required placeholder="Ej: Barbosa">
+                                                <span class="field-help">Primer apellido del estudiante</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-user"></i> Segundo Apellido
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{segundoApellido}" placeholder="Ej: Ramírez">
+                                                <span class="field-help">Segundo apellido del estudiante (opcional)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-envelope"></i> Correo Electrónico <span class="badge-required">REQUERIDO</span>
+                                                </label>
+                                                <input type="email" class="form-control" th:field="*{correoElectronico}" required placeholder="Ej: juan@email.com">
+                                                <span class="field-help">Correo válido para comunicaciones importantes</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-phone"></i> Teléfono
+                                                </label>
+                                                <input type="tel" class="form-control" th:field="*{numeroTelefonico}" placeholder="Ej: 3105551234">
+                                                <span class="field-help">Teléfono de contacto del estudiante</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sección: Datos Académicos -->
+                                <h4 class="section-title">
+                                    <i class="fas fa-book"></i> Información Académica
+                                </h4>
+                                <div class="section-description">
+                                    <i class="fas fa-lightbulb"></i> <strong>¿Qué es esto?</strong> 
+                                    Información relacionada con el registro académico y desempeño del estudiante en el examen Saber Pro.
+                                </div>
+                                <div class="form-section">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-identification-card"></i> Número de Registro
+                                                </label>
+                                                <input type="text" class="form-control" th:field="*{numeroRegistro}" placeholder="Ej: 201810024563">
+                                                <span class="field-help">Número de registro académico en la universidad</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-calendar-alt"></i> Fecha de Examen
+                                                </label>
+                                                <input type="date" class="form-control" th:field="*{fechaExamen}">
+                                                <span class="field-help">Fecha en que el estudiante presentó el examen Saber Pro</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-language"></i> Nivel de Inglés
+                                        </label>
+                                        <select class="form-select" th:field="*{nivelIngles}">
+                                            <option value="">-- Seleccionar --</option>
+                                            <option value="A1">A1 - Principiante (Muy básico)</option>
+                                            <option value="A2">A2 - Elemental (Básico)</option>
+                                            <option value="B1">B1 - Intermedio (Independiente)</option>
+                                            <option value="B2">B2 - Intermedio Alto (Independiente)</option>
+                                            <option value="C1">C1 - Avanzado (Dominio operativo)</option>
+                                            <option value="C2">C2 - Dominio Pleno (Dominio completo)</option>
+                                        </select>
+                                        <span class="field-help">Nivel de inglés obtenido en la sección de idioma del Saber Pro</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-chart-line"></i> Puntaje Global Saber Pro <span class="badge-required">REQUERIDO (para beneficios)</span>
+                                        </label>
+                                        <input type="number" class="form-control" th:field="*{puntaje}" placeholder="Ej: 200" step="0.01" min="0" max="300">
+                                        <span class="field-help">Puntaje total del examen Saber Pro (0-300). Este se calcula como el promedio de las 4 competencias.</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-level-up-alt"></i> Nivel de Puntaje
+                                        </label>
+                                        <input type="text" class="form-control" th:field="*{nivelPuntaje}" placeholder="Ej: Nivel 4">
+                                        <span class="field-help">Clasificación del nivel según el puntaje obtenido (Ej: Nivel 1, Nivel 2, Nivel 3, Nivel 4)</span>
+                                    </div>
+                                </div>
+
+                                <!-- Sección: Competencias Principales Saber Pro -->
+                                <h4 class="section-title">
+                                    <i class="fas fa-star"></i> Competencias Principales del Examen Saber Pro
+                                </h4>
+                                <div class="section-description">
+                                    <i class="fas fa-lightbulb"></i> <strong>¿Qué es esto?</strong> 
+                                    El examen Saber Pro evalúa 4 competencias genéricas principales. Cada una se califica de 0 a 300 puntos. 
+                                    El puntaje global es el promedio de estas cuatro competencias.
+                                </div>
+                                <div class="form-section">
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-calculator"></i> <strong>Fórmula del Puntaje Global:</strong> 
+                                        Promedio = (Lectura Crítica + Razonamiento Cuantitativo + Competencias Ciudadanas + Inglés) ÷ 4
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    <i class="fas fa-book"></i> Lectura Crítica
+                                                </label>
+                                                <input type="number" class="form-control" th:field="*{lecturaCritica}" placeholder="Ej: 200" step="1" min="0" max="300">
+                                                <span class="field-help">
+													Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Comprensión lectora, análisis crítico e interpretación de textos
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-calculator"></i> Razonamiento Cuantitativo
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{razonamientoCuantitativo}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Habilidades matemáticas, lógica y solución de problemas cuantitativos
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-handshake"></i> Competencias Ciudadanas
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{competenciasCiudadanas}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Conocimiento cívico, pensamiento ético y capacidad de convivencia social
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-globe"></i> Inglés
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{ingles}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Dominio del idioma inglés en lectura, escritura y comprensión
+													                                                </span>
+													                                            </div>
+													                                        </div>
+													                                    </div>
+
+													                                    <div class="alert alert-info">
+													                                        <i class="fas fa-info-circle"></i> <strong>Nota Importante:</strong> 
+													                                        Todos los puntajes deben estar entre 0 y 300. El sistema usará estos valores para calcular automáticamente el puntaje global.
+													                                    </div>
+													                                </div>
+
+													                                <!-- Sección: Competencias Específicas del Programa -->
+													                                <h4 class="section-title">
+													                                    <i class="fas fa-cogs"></i> Competencias Específicas del Programa
+													                                </h4>
+													                                <div class="section-description">
+													                                    <i class="fas fa-lightbulb"></i> <strong>¿Qué es esto?</strong> 
+													                                    Estas son competencias específicas evaluadas por el programa académico. Se califican de 0 a 300 puntos y permiten 
+													                                    evaluar habilidades técnicas particulares de la carrera.
+													                                </div>
+													                                <div class="form-section">
+													                                    <div class="row">
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-pen-fancy"></i> Comunicación Escrita
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{comunicacionEscrita}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Capacidad de expresarse por escrito de forma clara, coherente y adecuada
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-project-diagram"></i> Formulación de Proyectos de Ingeniería
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{formulacionProyectosIngenieria}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Capacidad para diseñar, planificar y formular proyectos de ingeniería
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-flask"></i> Pensamiento Científico
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{pensamientoCientifico}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Capacidad para aplicar método científico y análisis sistemático en la solución de problemas
+													                                                </span>
+													                                            </div>
+													                                        </div>
+
+													                                        <div class="col-md-6 mb-4">
+													                                            <div class="form-group">
+													                                                <label class="form-label">
+													                                                    <i class="fas fa-code"></i> Diseño de Software
+													                                                </label>
+													                                                <input type="number" class="form-control" th:field="*{disenoSoftware}" placeholder="Ej: 200" step="1" min="0" max="300">
+													                                                <span class="field-help">
+													                                                    Puntaje: 0-300<br>
+													                                                    <strong>Evalúa:</strong> Capacidad para diseñar, arquitectar y desarrollar soluciones de software
+													                                                </span>
+													                                            </div>
+													                                        </div>
+													                                    </div>
+
+													                                    <div class="alert alert-success">
+													                                        <i class="fas fa-check-circle"></i> <strong>Referencia:</strong> 
+													                                        Todos estos campos son opcionales. Si el estudiante fue evaluado en estas competencias específicas, ingresa los puntajes aquí.
+													                                    </div>
+													                                </div>
+
+													                                <!-- Información de Beneficios -->
+													                                <h4 class="section-title">
+													                                    <i class="fas fa-gift"></i> Información de Beneficios (Referencia)
+													                                </h4>
+													                                <div class="section-description">
+													                                    <i class="fas fa-lightbulb"></i> <strong>¿Sabías que?</strong> 
+													                                    Los puntajes registrados determinan automáticamente los beneficios que obtiene el estudiante.
+													                                </div>
+													                                <div class="form-section">
+													                                    <div class="row">
+													                                        <div class="col-md-6 mb-3">
+													                                            <div class="alert alert-danger">
+													                                                <h6><i class="fas fa-exclamation-circle"></i> Puntaje < 80</h6>
+													                                                <p class="mb-0 small"><strong>Estado:</strong> No puede graduarse</p>
+													                                            </div>
+													                                        </div>
+													                                        <div class="col-md-6 mb-3">
+													                                            <div class="alert alert-warning">
+													                                                <h6><i class="fas fa-minus-circle"></i> Puntaje 80-179</h6>
+													                                                <p class="mb-0 small"><strong>Beneficio:</strong> Sin beneficio adicional</p>
+													                                            </div>
+													                                        </div>
+													                                        <div class="col-md-6 mb-3">
+													                                            <div class="alert alert-success">
+													                                                <h6><i class="fas fa-thumbs-up"></i> Puntaje 180-210</h6>
+													                                                <p class="mb-0 small"><strong>Beneficio 4.5:</strong> Exoneración TG + Nota 4.5</p>
+													                                            </div>
+													                                        </div>
+													                                        <div class="col-md-6 mb-3">
+													                                            <div class="alert alert-success">
+													                                                <h6><i class="fas fa-star"></i> Puntaje 211-240</h6>
+													                                                <p class="mb-0 small"><strong>Beneficio 4.7:</strong> Exoneración TG + Nota 4.7 + Beca 50%</p>
+													                                            </div>
+													                                        </div>
+													                                        <div class="col-md-12 mb-3">
+													                                            <div class="alert alert-success">
+													                                                <h6><i class="fas fa-trophy"></i> Puntaje 241+</h6>
+													                                                <p class="mb-0 small"><strong>Beneficio 5.0:</strong> Exoneración TG + Nota 5.0 + Beca 100%</p>
+													                                            </div>
+													                                        </div>
+													                                    </div>
+													                                </div>
+
+													                                <!-- Botones de Acción -->
+													                                <div class="row mt-5">
+													                                    <div class="col-md-6">
+													                                        <button type="submit" class="btn btn-primary btn-lg w-100">
+													                                            <i class="fas fa-save"></i> Guardar Estudiante
+													                                        </button>
+													                                    </div>
+													                                    <div class="col-md-6">
+													                                        <a th:href="@{/coordinacion/estudiantes}" class="btn btn-secondary btn-lg w-100">
+													                                            <i class="fas fa-times"></i> Cancelar
+													                                        </a>
+													                                    </div>
+													                                </div>
+													                            </form>
+													                        </div>
+													                    </div>
+													                </div>
+													            </div>
+													        </div>
+													    </div>
+
+													    <!-- Footer -->
+													    <footer>
+													        <div class="container">
+													            <div class="row">
+													                <div class="col-md-8">
+													                    <small>
+													                        &copy; 2024 Universidad Tecnológica de Santander - Sistema Saber Pro v1.0.0
+													                    </small>
+													                </div>
+													                <div class="col-md-4 text-end">
+													                    <small>
+													                        <i class="fas fa-lock"></i> Acceso seguro autenticado
+													                    </small>
+													                </div>
+													            </div>
+													        </div>
+													    </footer>
+
+													    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+													</body>
+													</html>
+
+

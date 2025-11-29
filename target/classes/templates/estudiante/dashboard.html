@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Dashboard - Sistema Saber Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 50%, #ffffff 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d4a2b;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles - Según especificación */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 3px 25px rgba(40, 167, 69, 0.15);
+            padding: 0;
+            border-bottom: 4px solid #28a745;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: #28a745 !important;
+            font-size: 1.7rem;
+            padding: 1.3rem 2rem;
+            background: linear-gradient(135deg, #f1f8f1 0%, #e8f5e9 100%);
+            border-right: 4px solid #28a745;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .navbar-brand i {
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #2d4a2b !important;
+            padding: 0.85rem 1.3rem;
+            font-weight: 700;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+            color: #ffffff !important;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.12);
+            border: 3px solid #e8f5e9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #28a745, #20c997, #28a745);
+            background-size: 200% 100%;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-header h1 {
+            color: #28a745;
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-header p {
+            color: #6c757d;
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .page-header strong {
+            color: #28a745;
+            font-weight: 800;
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 24px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.12);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 2rem;
+            overflow: visible;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #28a745, #20c997, #28a745);
+            background-size: 200% 100%;
+            animation: gradient-shift 3s ease infinite;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 60px rgba(40, 167, 69, 0.25);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
+            color: #28a745;
+            padding: 2rem 2.5rem;
+            font-weight: 700;
+            border-radius: 24px 24px 0 0;
+            border-bottom: 3px solid #e8f5e9;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #28a745;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        .card-body h5 {
+            color: #28a745;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+        }
+
+        .card-body p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* Quick Action Buttons - Completamente Rediseñados */
+        .quick-action-btn {
+            display: block;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
+            border: 3px solid #e8f5e9;
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.1);
+        }
+
+        .quick-action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(40, 167, 69, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .quick-action-btn:hover::before {
+            left: 100%;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: #28a745;
+            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.3);
+        }
+
+        .quick-action-btn i {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .quick-action-btn h6 {
+            color: #28a745;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .quick-action-btn:hover h6 {
+            color: #20c997;
+        }
+
+        .quick-action-btn small {
+            color: #6c757d;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* Icon Colors */
+        .text-primary {
+            color: #28a745 !important;
+        }
+
+        .text-info {
+            color: #20c997 !important;
+        }
+
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 -3px 25px rgba(40, 167, 69, 0.1);
+            border-top: 4px solid #28a745;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: #6c757d;
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.3rem;
+                padding: 1rem 1.5rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.7rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .quick-action-btn {
+                padding: 1.5rem 1rem;
+            }
+
+            .quick-action-btn i {
+                font-size: 2.5rem;
+            }
+
+            .quick-action-btn h6 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Animation for icons */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .quick-action-btn i {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .quick-action-btn:nth-child(1) i { animation-delay: 0s; }
+        .quick-action-btn:nth-child(2) i { animation-delay: 0.2s; }
+        .quick-action-btn:nth-child(3) i { animation-delay: 0.4s; }
+        .quick-action-btn:nth-child(4) i { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid" style="max-width: 1400px; margin: 0 auto;">
+            <a class="navbar-brand" th:href="@{/estudiante/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/estudiante/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/identificacion}">
+                            <i class="fas fa-id-card"></i> Identificación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mi-resultado}">
+                            <i class="fas fa-chart-line"></i> Mi Resultado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/resultados-totales}">
+                            <i class="fas fa-users"></i> Resultados del Grupo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mis-beneficios}">
+                            <i class="fas fa-star"></i> Mis Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1><i class="fas fa-user-graduate"></i> Mi Dashboard</h1>
+            <p>Bienvenido, <strong sec:authentication="name">Estudiante</strong></p>
+        </div>
+
+        <!-- Welcome Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5><i class="fas fa-info-circle"></i> Información</h5>
+                        <p>Desde este panel puedes acceder a tu información académica, ver tus resultados en la prueba SABER PRO y consultar los beneficios que has obtenido según tu desempeño.</p>
+                        <p class="text-muted mb-0">Todos tus datos están protegidos y solo tú puedes verlos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Actions -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-list"></i> Mis Opciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-3">
+                                <a th:href="@{/estudiante/identificacion}" class="quick-action-btn text-dark">
+                                    <i class="fas fa-id-card text-primary"></i>
+                                    <h6>Mi Identificación</h6>
+                                    <small class="text-muted">Datos personales y académicos</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <a th:href="@{/estudiante/mi-resultado}" class="quick-action-btn text-dark">
+                                    <i class="fas fa-chart-line text-info"></i>
+                                    <h6>Mis Resultados</h6>
+                                    <small class="text-muted">Puntaje y competencias</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <a th:href="@{/estudiante/mis-beneficios}" class="quick-action-btn text-dark">
+                                    <i class="fas fa-award text-success"></i>
+                                    <h6>Mis Beneficios</h6>
+                                    <small class="text-muted">Becas y reconocimientos</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <a th:href="@{/estudiante/resultados-totales}" class="quick-action-btn text-dark">
+                                    <i class="fas fa-users text-warning"></i>
+                                    <h6>Resultados Generales</h6>
+                                    <small class="text-muted">Estadísticas del grupo</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Sistema Saber Pro UTS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

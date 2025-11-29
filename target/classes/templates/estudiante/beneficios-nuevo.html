@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Beneficios - SaberPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+	<style>
+	        * {
+	            margin: 0;
+	            padding: 0;
+	            box-sizing: border-box;
+	        }
+
+	        body {
+	            background: #f4f8f1; /* Soft green background */
+	            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	            color: #333;
+	            min-height: 100vh;
+	        }
+
+	        /* Navbar */
+	        .navbar {
+	            background: linear-gradient(90deg, #28a745 0%, #218838 100%); /* Green gradient */
+	            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	            padding: 1rem 0;
+	        }
+
+	        .navbar-brand {
+	            font-weight: 700;
+	            color: #ffffff !important;
+	            font-size: 1.5rem;
+	            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	        }
+
+	        .navbar-nav .nav-link {
+	            color: #ffffff !important;
+	            margin: 0 1rem;
+	            font-weight: 500;
+	            opacity: 0.9;
+	        }
+
+	        .navbar-nav .nav-link:hover {
+	            color: #ffffff !important;
+	            opacity: 1;
+	            transform: translateY(-2px);
+	        }
+
+	        /* Cards */
+	        .card {
+	            border: none;
+	            border-radius: 18px;
+	            background-color: #ffffff;
+	            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+	            transition: all 0.35s ease;
+	            margin-bottom: 2rem;
+	        }
+
+	        .card:hover {
+	            transform: translateY(-5px);
+	            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+	        }
+
+	        .card-header {
+	            background: linear-gradient(90deg, #28a745 0%, #218838 100%);
+	            color: white;
+	            padding: 1.5rem;
+	            font-weight: 600;
+	            border-radius: 18px 18px 0 0;
+	        }
+
+	        .card-header h5 {
+	            margin: 0;
+	            font-size: 1.3rem;
+	            font-weight: 700;
+	        }
+
+	        /* Stat Cards */
+	        .stat-card {
+	            border-radius: 15px;
+	            transition: all 0.3s ease;
+	            height: 100%;
+	            padding: 2rem 1rem;
+	        }
+
+	        .stat-card:hover {
+	            transform: translateY(-5px);
+	            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+	        }
+
+	        .stat-card h2 {
+	            font-size: 2.5rem;
+	            font-weight: bold;
+	        }
+
+	        .stat-card .text-primary {
+	            color: #28a745;
+	        }
+
+	        .stat-card .text-warning {
+	            color: #ffc107;
+	        }
+
+	        .stat-card .text-danger {
+	            color: #dc3545;
+	        }
+
+	        /* Buttons */
+	        .btn {
+	            border-radius: 50px;
+	            padding: 0.75rem 2rem;
+	            font-weight: 600;
+	            transition: all 0.3s ease;
+	            border: none;
+	        }
+
+	        .btn:hover {
+	            transform: translateY(-3px);
+	            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+	        }
+
+	        .btn-primary {
+	            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+	        }
+
+	        .btn-info {
+	            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+	        }
+
+	        .btn-success {
+	            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+	        }
+
+	        /* Header */
+	        h2 {
+	            color: #28a745;
+	            font-weight: 700;
+	            margin-bottom: 2rem;
+	        }
+
+	        .display-2 {
+	            font-size: 3.5rem;
+	            font-weight: bold;
+	        }
+
+	        .badge {
+	            font-size: 0.9rem;
+	            padding: 0.5rem 1rem;
+	            border-radius: 10px;
+	        }
+
+	        .table thead {
+	            background: #f4f8f1;
+	            color: #333;
+	        }
+
+	        .footer {
+	            background-color: #fff;
+	            padding: 1.5rem 0;
+	            text-align: center;
+	            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+	        }
+
+	        footer small {
+	            color: #777;
+	        }
+
+	    </style>
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container" style="max-width: 1200px;">
+            <a class="navbar-brand" th:href="@{/estudiante/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/identificacion}">
+                            <i class="fas fa-id-card"></i> Identificación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mi-resultado}">
+                            <i class="fas fa-chart-bar"></i> Mi Resultado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/resultados-totales}">
+                            <i class="fas fa-users"></i> Resultados del Grupo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/estudiante/mis-beneficios}">
+                            <i class="fas fa-gift"></i> Mis Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4" style="max-width: 1200px;">
+        <h2 class="mb-4 text-center"><i class="fas fa-gift text-success"></i> Mis Beneficios Académicos</h2>
+
+        <!-- Información del Estudiante -->
+        <div class="card mb-4" th:if="${estudiante != null}">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Información del Estudiante</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong><i class="fas fa-user-circle"></i> Nombre:</strong><br>
+                        <span th:text="${estudiante.nombreCompleto}">Nombre Completo</span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="fas fa-id-card"></i> Documento:</strong><br>
+                        <span th:text="${estudiante.tipoDocumento + ' - ' + estudiante.numeroDocumento}">CC - 123456789</span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong><i class="fas fa-trophy"></i> Puntaje:</strong><br>
+                        <span class="h4 text-primary" th:text="${estudiante.puntaje}">0</span> / 300</p>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <p><strong><i class="fas fa-graduation-cap"></i> Estado:</strong>
+                        <span th:if="${puedeGraduarse}" class="text-success"><i class="fas fa-check-circle"></i> Puede graduarse</span>
+                        <span th:unless="${puedeGraduarse}" class="text-danger"><i class="fas fa-times-circle"></i> No cumple requisitos</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beneficio del Estudiante -->
+        <div class="card mb-4" th:if="${beneficio != null}">
+            <div class="card-header text-white" th:classappend="${estudiante.puntaje >= 241} ? 'bg-warning' : (${estudiante.puntaje >= 211} ? 'bg-info' : (${estudiante.puntaje >= 180} ? 'bg-success' : 'bg-secondary'))">
+                <h5 class="mb-0"><i class="fas fa-award"></i> Tu Beneficio Académico</h5>
+            </div>
+            <div class="card-body">
+                <h4 class="text-center mb-4" th:text="${beneficio}">Descripción del Beneficio</h4>
+                
+                <div th:if="${estudiante.puntaje >= 180}" class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> ¡Felicitaciones! Has obtenido un beneficio académico por tu excelente desempeño.
+                </div>
+                <div th:unless="${estudiante.puntaje >= 180}" class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Para acceder a beneficios académicos, necesitas alcanzar un puntaje mínimo de 180 puntos.
+                </div>
+            </div>
+        </div>
+
+        <!-- Niveles de Beneficio -->
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-star"></i> Niveles de Beneficio</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card benefit-card benefit-bronze h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning"><i class="fas fa-medal"></i> Beneficio 4.5</h5>
+                                <p class="card-text"><strong><i class="fas fa-arrow-up"></i> Puntaje: 180-210</strong></p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Exoneración informe final Trabajo de Grado</li>
+                                    <li><i class="fas fa-check text-success"></i> Nota definitiva 4.5 en TG</li>
+                                    <li><i class="fas fa-check text-success"></i> Reconocimiento académico oficial</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card benefit-card benefit-silver h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-info"><i class="fas fa-medal"></i> Beneficio 4.7 + Beca 50%</h5>
+                                <p class="card-text"><strong><i class="fas fa-arrow-up"></i> Puntaje: 211-240</strong></p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Exoneración informe final Trabajo de Grado</li>
+                                    <li><i class="fas fa-check text-success"></i> Nota definitiva 4.7 en TG</li>
+                                    <li><i class="fas fa-check text-success"></i> Beca 50% derechos de grado</li>
+                                    <li><i class="fas fa-check text-success"></i> Reconocimiento académico oficial</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card benefit-card benefit-gold h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning"><i class="fas fa-trophy"></i> Beneficio 5.0 + Beca 100%</h5>
+                                <p class="card-text"><strong><i class="fas fa-arrow-up"></i> Puntaje: 241+</strong></p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success"></i> Exoneración informe final Trabajo de Grado</li>
+                                    <li><i class="fas fa-check text-success"></i> Nota definitiva 5.0 en TG</li>
+                                    <li><i class="fas fa-check text-success"></i> Beca 100% derechos de grado</li>
+                                    <li><i class="fas fa-check text-success"></i> Reconocimiento académico oficial</li>
+                                    <li><i class="fas fa-check text-success"></i> Oportunidades de postgrado</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información General -->
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Información General</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-exclamation-circle"></i> Requisito Mínimo para Graduarse</h6>
+                            <p class="mb-0">Los estudiantes deben obtener como mínimo <strong>80 puntos</strong> en el examen Saber Pro para poder graduarse. Sin alcanzar este puntaje, no es posible completar la carrera.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-file-alt"></i> Documentación Requerida</h6>
+                            <p class="mb-0">Todos los beneficiarios deben completar los trámites de documentación requeridos por la universidad dentro de los plazos establecidos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-clipboard-check"></i> Cumplimiento de Requisitos</h6>
+                            <p class="mb-0">Para acceder a los beneficios, los estudiantes deben cumplir con todos los requisitos académicos y administrativos establecidos por la universidad, incluyendo la aprobación de todos los cursos.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-envelope"></i> Notificación Oficial</h6>
+                            <p class="mb-0">Los estudiantes beneficiarios recibirán una notificación oficial por correo electrónico con los detalles completos de sus beneficios y los pasos a seguir.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-calendar-check"></i> Vigencia de Beneficios</h6>
+                            <p class="mb-0">Los beneficios son válidos durante toda la carrera académica del estudiante, siempre que mantenga un estado académico vigente y activo.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h6><i class="fas fa-phone-alt"></i> Más Información</h6>
+                            <p class="mb-0">Para consultas adicionales sobre los beneficios, contacte a la coordinación académica a través del correo <strong>coordinacion@uts.edu.co</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de Error -->
+        <div class="alert alert-warning" role="alert" th:if="${estudiante == null}">
+            <i class="fas fa-exclamation-triangle"></i> 
+            <span th:if="${error != null}" th:text="${error}"></span>
+            <span th:if="${error == null}">No se encontró información del estudiante.</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

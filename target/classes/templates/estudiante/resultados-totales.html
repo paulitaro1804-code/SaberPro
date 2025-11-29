@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados del Grupo - SaberPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/theme-green.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #1a3d2e;
+            min-height: 100vh;
+        }
+
+        /* Navbar - Diseño Flotante Moderno */
+		.navbar {
+		            background: #ffffff;
+		            box-shadow: 0 3px 25px rgba(40, 167, 69, 0.15);
+		            padding: 0;
+		            border-bottom: 4px solid #28a745;
+		            position: sticky;
+		            top: 0;
+		            z-index: 1000;
+		        }
+
+		        .navbar-brand {
+		            font-weight: 800;
+		            color: #28a745 !important;
+		            font-size: 1.7rem;
+		            padding: 1.3rem 2rem;
+		            background: linear-gradient(135deg, #f1f8f1 0%, #e8f5e9 100%);
+		            border-right: 4px solid #28a745;
+		            display: flex;
+		            align-items: center;
+		            gap: 0.6rem;
+		        }
+
+		        .navbar-brand i {
+		            font-size: 2rem;
+		            animation: pulse 2s infinite;
+		        }
+
+		        @keyframes pulse {
+		            0%, 100% { transform: scale(1); }
+		            50% { transform: scale(1.05); }
+		        }
+
+		        .navbar-nav {
+		            flex-direction: row;
+		            align-items: center;
+		            gap: 0.3rem;
+		            padding: 0.5rem 1rem;
+		        }
+
+		        .navbar-nav .nav-link {
+		            color: #2d4a2b !important;
+		            padding: 0.85rem 1.3rem;
+		            font-weight: 700;
+		            border-radius: 14px;
+		            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		            display: flex;
+		            align-items: center;
+		            gap: 0.5rem;
+		            font-size: 0.95rem;
+		        }
+
+		        .navbar-nav .nav-link:hover,
+		        .navbar-nav .nav-link.active {
+		            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+		            color: #ffffff !important;
+		            transform: translateY(-3px) scale(1.05);
+		            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+		        }
+
+
+        /* Header con Diseño Diagonal */
+        h2 {
+            color: #1a3d2e;
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding-left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(180deg, #28a745 0%, #20c997 100%);
+            border-radius: 10px;
+            transform: skewY(-3deg);
+        }
+
+        h2 i {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Cards - Diseño con Esquinas Cortadas */
+        .card {
+            border: none;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, transparent 50%, rgba(40, 167, 69, 0.05) 50%);
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8fdf9 0%, #e8f5e9 100%);
+            color: #1a3d2e;
+            padding: 2rem;
+            font-weight: 700;
+            border-bottom: 3px solid #28a745;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #28a745 0%, #20c997 100%);
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a3d2e;
+        }
+
+        .card-header i {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Stat Cards - Diseño Hexagonal Moderno */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+
+        .stat-card .card-body {
+            padding: 2.5rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+            z-index: 1;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -30px;
+            left: -30px;
+            z-index: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) rotate(-1deg);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card h6 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-card h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 1rem 0;
+            line-height: 1;
+        }
+
+        .stat-card small {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .bg-primary {
+            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%) !important;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%) !important;
+        }
+
+        .bg-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%) !important;
+        }
+
+        /* Border Cards con Efecto Neón */
+        .border-primary {
+            border: 3px solid #28a745 !important;
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.2), 0 8px 25px rgba(40, 167, 69, 0.1);
+        }
+
+        .border-primary:hover {
+            box-shadow: 0 0 30px rgba(40, 167, 69, 0.4), 0 15px 40px rgba(40, 167, 69, 0.2);
+        }
+
+        /* Position Display - Diseño Circular */
+        .position-display {
+            position: relative;
+        }
+
+        .position-display h3 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .position-display p {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+            color: #5a7d6f;
+        }
+
+        .position-display small {
+            font-weight: 600;
+            color: #7a9d8f;
+        }
+
+        /* Badge Modernos */
+        .badge {
+            font-size: 1.1rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .badge.bg-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        }
+
+        /* Alert Personalizado */
+        .alert {
+            border: none;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            border-left: 5px solid #ffc107;
+            background: linear-gradient(135deg, #fff9e6 0%, #fffef7 100%);
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.15);
+        }
+
+        .alert-warning {
+            color: #856404;
+            font-weight: 600;
+        }
+
+        /* Info Grid - Diseño de Tarjetas */
+        .info-item {
+            background: linear-gradient(135deg, #f8fdf9 0%, #e8f5e9 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid #28a745;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.15);
+        }
+
+        .info-item strong {
+            display: block;
+            color: #28a745;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item span {
+            color: #2d5f45;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #ffffff;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(40, 167, 69, 0.08);
+            border-top: 2px solid #e8f5e9;
+            margin-top: 4rem;
+        }
+
+        .footer small {
+            color: #5a7d6f;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 2rem;
+            }
+
+            .stat-card h2 {
+                font-size: 2.5rem;
+            }
+
+            .position-display h3 {
+                font-size: 3rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-card {
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Decorative Elements */
+        .decorative-circle {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(40, 167, 69, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .decorative-circle-1 {
+            top: -100px;
+            right: -100px;
+        }
+
+        .decorative-circle-2 {
+            bottom: -150px;
+            left: -150px;
+        }
+
+        /* Container Enhancement */
+        main.container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative-circle decorative-circle-1"></div>
+    <div class="decorative-circle decorative-circle-2"></div>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/estudiante/dashboard}">
+                <i class="fas fa-graduation-cap"></i> Sistema SaberPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/dashboard}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/identificacion}">
+                            <i class="fas fa-id-card"></i> Identificación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mi-resultado}">
+                            <i class="fas fa-chart-line"></i> Mi Resultado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/estudiante/resultados-totales}">
+                            <i class="fas fa-users"></i> Resultados del Grupo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/estudiante/mis-beneficios}">
+                            <i class="fas fa-star"></i> Mis Beneficios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <h2><i class="fas fa-chart-bar"></i> Estadísticas Globales del Grupo</h2>
+
+        <!-- Tu Posición Relativa Anónima -->
+        <div class="card mb-4 border-primary" th:if="${miPosicion != null}">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-medal"></i> Tu Posición Relativa (Anónima)</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6 position-display">
+                        <h3 th:text="${miPosicion}"></h3>
+                        <p class="mb-0">Tu Posición</p>
+                        <small>de <span th:text="${totalConPuntaje}"></span> estudiantes</small>
+                    </div>
+                    <div class="col-md-6 position-display">
+                        <h3 th:text="${#numbers.formatDecimal((totalConPuntaje - miPosicion) * 100.0 / totalConPuntaje, 1, 1)} + '%'"></h3>
+                        <p class="mb-0">Percentil</p>
+                        <small>Porcentaje que superas</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas Generales del Grupo -->
+        <div class="row g-4 mb-4" th:if="${totalEstudiantes != null}">
+            <div class="col-md-3">
+                <div class="card stat-card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h6><i class="fas fa-users"></i> Total Estudiantes</h6>
+                        <h2 th:text="${totalEstudiantes}"></h2>
+                        <small th:text="${totalConPuntaje} + ' con puntaje'"></small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h6><i class="fas fa-chart-line"></i> Promedio General</h6>
+                        <h2 th:text="${#numbers.formatDecimal(promedioGeneral, 1, 1)}"></h2>
+                        <small>Puntaje promedio</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h6><i class="fas fa-arrow-up"></i> Nota Máxima</h6>
+                        <h2 th:text="${notaMaxima}"></h2>
+                        <small>Mejor puntaje</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <h6><i class="fas fa-arrow-down"></i> Nota Mínima</h6>
+                        <h2 th:text="${notaMinima}"></h2>
+                        <small>Menor puntaje</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tu Información Personal -->
+        <div class="card mb-4" th:if="${estudiante != null}">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Tu Información</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <strong>Nombre</strong>
+                            <span th:text="${estudiante.primerNombre} + ' ' + ${estudiante.primerApellido}"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Tu Puntaje</strong>
+                            <span class="badge bg-primary fs-5" th:text="${estudiante.puntaje}"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <strong>Documento</strong>
+                            <span th:text="${estudiante.tipoDocumento} + ' ' + ${estudiante.numeroDocumento}"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Fecha Examen</strong>
+                            <span th:text="${#temporals.format(estudiante.fechaExamen, 'dd/MM/yyyy')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning" role="alert" th:if="${estudiante == null}">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span th:if="${error != null}" th:text="${error}"></span>
+            <span th:if="${error == null}">No se encontró información del estudiante.</span>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <small><i class="fas fa-copyright"></i> 2024 Sistema SaberPro. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

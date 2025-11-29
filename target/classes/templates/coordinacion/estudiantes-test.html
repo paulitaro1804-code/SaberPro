@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test - Estudiantes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Gestión de Estudiantes - TEST</h1>
+        <p>PageTitle: <span th:text="${pageTitle}">No title</span></p>
+        <p>Total estudiantes: <span th:text="${#lists.size(estudiantes)}">0</span></p>
+        
+        <table class="table table-bordered mt-4" th:if="${estudiantes != null}">
+            <thead>
+                <tr>
+                    <th>Documento</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="est : ${estudiantes}">
+                    <td th:text="${est.numeroDocumento}">-</td>
+                    <td th:text="${est.nombreCompleto}">-</td>
+                    <td th:text="${est.correoElectronico}">-</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div th:if="${estudiantes == null}" class="alert alert-warning">
+            La lista de estudiantes es null
+        </div>
+        
+        <div th:if="${#lists.isEmpty(estudiantes)}" class="alert alert-info">
+            No hay estudiantes registrados
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+:root {
+    --green-50: #eafaf0;
+    --green-100: #d4f5e1;
+    --green-200: #aee9c3;
+    --green-300: #87db9f;
+    --green-400: #4ccc73;
+    --green-500: #2ecc71; /* primary */
+    --green-600: #27ae60;
+    --green-700: #1e8f4d;
+    --white: #ffffff;
+    --muted: #6c757d;
+    --surface: #ffffff;
+}
+
+/* Reset tweaks */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, var(--green-50) 0%, var(--white) 40%);
+    color: #223;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, var(--green-600) 0%, var(--green-500) 100%);
+    box-shadow: 0 2px 8px rgba(15, 76, 43, 0.08);
+}
+.navbar-brand, .nav-link {
+    color: var(--white) !important;
+}
+.nav-link:hover { opacity: 0.95; transform: translateY(-2px); }
+
+/* Cards */
+.card {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(34,34,34,0.06);
+    transition: all 0.35s ease;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--green-500) 0%, var(--green-600) 100%) !important;
+    border: none !important;
+    color: var(--white) !important;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(46,204,113,0.18);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--green-600) 0%, var(--green-700) 100%) !important;
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+.form-control:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 0.2rem rgba(46,204,113,0.18);
+}
+
+.form-label { color: #233; font-weight: 600; }
+
+/* Alerts */
+.alert {
+    border: none;
+    border-left: 5px solid;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(198, 255, 207, 0.1) 100%);
+    border-left-color: #28a745;
+    color: #155724;
+}
+
+/* Footer */
+footer {
+    background: transparent;
+    color: var(--muted);
+    padding-top: 2rem;
+}
+footer .border-top {
+    border-top-color: rgba(0,0,0,0.06) !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .navbar { padding: 0.5rem 0; }
+}
+
+/* Utility classes */
+.text-muted {
+    color: #6c757d !important;
+}
